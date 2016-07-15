@@ -1,1 +1,8 @@
+npm-debug.log
 node_modules
+sprite-animation-generator-darwin-x64/
+sprite-animation-generator-linux-ia32/
+sprite-animation-generator-linux-x64/
+sprite-animation-generator-mas-x64/
+sprite-animation-generator-win32-ia32/
+sprite-animation-generator-win32-x64/

@@ -1,5 +1,6 @@
 {
   "name": "sprite-animation-generator",
+  "productName": "Sprite Animation Generator",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {

@@ -2,8 +2,8 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-const {ipcRenderer, remote, shell} = require('electron');
-const {Menu} = remote;
+const { ipcRenderer, remote, shell } = require('electron');
+const { Menu } = remote;
 
 function createMenu() {
     const template = [
@@ -17,7 +17,7 @@ function createMenu() {
                         if (focusedWindow) {
                             focusedWindow.reload();
                         }
-                    }
+                    },
                 },
                 {
                     label: 'Toggle Developer Tools',
@@ -26,9 +26,9 @@ function createMenu() {
                         if (focusedWindow) {
                             focusedWindow.webContents.toggleDevTools();
                         }
-                    }
-                }
-            ]
+                    },
+                },
+            ],
         },
         {
             role: 'help',
@@ -37,10 +37,10 @@ function createMenu() {
                     label: 'manu.ninja',
                     click() {
                         shell.openExternal('https://manu.ninja');
-                    }
+                    },
                 },
-            ]
-        }
+            ],
+        },
     ];
 
     if (process.platform === 'darwin') {
@@ -49,30 +49,30 @@ function createMenu() {
             label: name,
             submenu: [
                 {
-                    role: 'about'
+                    role: 'about',
                 },
                 {
-                    type: 'separator'
+                    type: 'separator',
                 },
                 {
-                    type: 'separator'
+                    type: 'separator',
                 },
                 {
-                    role: 'hide'
+                    role: 'hide',
                 },
                 {
-                    role: 'hideothers'
+                    role: 'hideothers',
                 },
                 {
-                    role: 'unhide'
+                    role: 'unhide',
                 },
                 {
-                    type: 'separator'
+                    type: 'separator',
                 },
                 {
-                    role: 'quit'
+                    role: 'quit',
                 },
-            ]
+            ],
         });
     }
 

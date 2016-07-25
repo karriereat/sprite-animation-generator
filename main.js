@@ -7,7 +7,7 @@ let mainWindow;
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({ width: 800, height: 600 });
+    mainWindow = new BrowserWindow({ width: 720, height: 480, titleBarStyle: 'hidden' });
 
     // and load the index.html of the app.
     mainWindow.loadURL(`file://${__dirname}/index.html`);
@@ -44,12 +44,12 @@ function promptDirectory() {
 app.on('ready', () => {
     createWindow();
     handleEvents();
-    const source = promptDirectory();
-    const destination = promptDirectory();
-    generator(source, destination).then(
-        success => console.log(success),
-        error => console.log(error)
-    );
+//    const source = promptDirectory();
+//    const destination = promptDirectory();
+//    generator(source, destination).then(
+//        success => console.log(success),
+//        error => console.log(error)
+//    );
 });
 
 // Quit when all windows are closed.

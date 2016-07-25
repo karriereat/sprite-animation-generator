@@ -2,12 +2,63 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="foundation.css">
+    <style>
+        body {
+            margin: 3rem;
+            cursor: default;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello World!</h1>
-    <form>
-        <button type="submit">Apply</button>
-    </form>
+<form>
+    <div class="row">
+        <div class="medium-12 columns">
+            <h1>Sprite Animation Generator</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="medium-12 columns">
+            <label>
+                Animation
+                <span class="input-group">
+                    <input class="input-group-field" type="text" name="source" placeholder="/path/to/your/image/sequence">
+                    <span class="input-group-button">
+                        <button class="button" type="button">Choose Directory</button>
+                    </span>
+                </span>
+            </label>
+            <label>
+                Destination
+                <span class="input-group">
+                    <input class="input-group-field" type="text" name="destination" placeholder="/path/to/your/generated/files">
+                    <span class="input-group-button">
+                        <button class="button" type="button">Choose Directory</button>
+                    </span>
+                </span>
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="medium-6 columns">
+            <label>
+                Name
+                <input type="text" name="name" placeholder="animation">
+            </label>
+        </div>
+        <div class="medium-6 columns">
+            <label>
+                FPS
+                <input type="number" name="fps" placeholder="30">
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="medium-12 columns">
+            <button class="large expanded button" type="submit">Apply</button>
+        </div>
+    </div>
+</form>
 </body>
 <script>
     // You can also require other files to run in this process

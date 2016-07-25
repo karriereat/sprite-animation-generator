@@ -34,6 +34,12 @@ function createMenu() {
             role: 'help',
             submenu: [
                 {
+                    label: 'karriere.at',
+                    click() {
+                        shell.openExternal('http://www.karriere.at');
+                    },
+                },
+                {
                     label: 'manu.ninja',
                     click() {
                         shell.openExternal('https://manu.ninja');

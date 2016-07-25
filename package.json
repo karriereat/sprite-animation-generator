@@ -8,10 +8,12 @@
     "build": "electron-packager ./ --platform=darwin,win32 --arch=x64 --prune --overwrite"
   },
   "author": "Manuel Wieser",
+  "dependencies": {
+    "animation-strip-generator": "https://github.com/karriereat/animation-strip-generator.git#master"
+  },
   "devDependencies": {
     "electron-packager": "^7.3.0",
     "electron-prebuilt": "^1.2.0",
-    "animation-strip-generator": "https://github.com/karriereat/animation-strip-generator.git#master",
     "eslint": "^3.1.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.11.1"

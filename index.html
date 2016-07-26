@@ -3,12 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="foundation.css">
-    <style>
-        body {
-            margin: 3rem;
-            cursor: default;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <form>
@@ -24,7 +19,7 @@
                 <span class="input-group">
                     <input class="input-group-field" type="text" name="source" placeholder="/path/to/your/image/sequence">
                     <span class="input-group-button">
-                        <button class="button" type="button">Choose Directory</button>
+                        <button class="button" type="button" id="chooseSource">Choose Directory</button>
                     </span>
                 </span>
             </label>
@@ -33,7 +28,7 @@
                 <span class="input-group">
                     <input class="input-group-field" type="text" name="destination" placeholder="/path/to/your/generated/files">
                     <span class="input-group-button">
-                        <button class="button" type="button">Choose Directory</button>
+                        <button class="button" type="button" id="chooseDestination">Choose Directory</button>
                     </span>
                 </span>
             </label>
@@ -49,7 +44,7 @@
         <div class="medium-6 columns">
             <label>
                 FPS
-                <input type="number" name="fps" placeholder="30">
+                <input type="number" min="12" max="48" name="fps" placeholder="30">
             </label>
         </div>
     </div>

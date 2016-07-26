@@ -3,94 +3,65 @@
 // All of the Node.js APIs are available in this process.
 
 const { ipcRenderer, remote, shell } = require('electron');
-const { Menu } = remote;
+const { dialog } = remote;
+const setApplicationMenu = require('./menu');
 
-function createMenu() {
-    const template = [
-        {
-            label: 'Debug',
-            submenu: [
-                {
-                    label: 'Reload',
-                    accelerator: 'CmdOrCtrl+R',
-                    click(item, focusedWindow) {
-                        if (focusedWindow) {
-                            focusedWindow.reload();
-                        }
-                    },
-                },
-                {
-                    label: 'Toggle Developer Tools',
-                    accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-                    click(item, focusedWindow) {
-                        if (focusedWindow) {
-                            focusedWindow.webContents.toggleDevTools();
-                        }
-                    },
-                },
-            ],
-        },
-        {
-            role: 'help',
-            submenu: [
-                {
-                    label: 'karriere.at',
-                    click() {
-                        shell.openExternal('http://www.karriere.at');
-                    },
-                },
-                {
-                    label: 'manu.ninja',
-                    click() {
-                        shell.openExternal('https://manu.ninja');
-                    },
-                },
-            ],
-        },
-    ];
+const form = document.querySelector('form');
 
-    if (process.platform === 'darwin') {
-        const name = remote.app.getName();
-        template.unshift({
-            label: name,
-            submenu: [
-                {
-                    role: 'about',
-                },
-                {
-                    type: 'separator',
-                },
-                {
-                    type: 'separator',
-                },
-                {
-                    role: 'hide',
-                },
-                {
-                    role: 'hideothers',
-                },
-                {
-                    role: 'unhide',
-                },
-                {
-                    type: 'separator',
-                },
-                {
-                    role: 'quit',
-                },
-            ],
-        });
-    }
+const inputs = {
+    source: form.querySelector('input[name="source"]'),
+    destination: form.querySelector('input[name="destination"]'),
+    name: form.querySelector('input[name="name"]'),
+    fps: form.querySelector('input[name="fps"]'),
+};
 
-    const menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
-}
 
-function handleEvents() {
-    ipcRenderer.on('did-finish-load', (event, arg) => {
-        createMenu();
-        console.log(arg);
+const buttons = {
+    source: document.getElementById('chooseSource'),
+    destination: document.getElementById('chooseDestination'),
+    submit: form.querySelector('button[type="submit"]'),
+};
+
+ipcRenderer.on('did-finish-load', () => {
+    setApplicationMenu();
+});
+
+ipcRenderer.on('processing-did-succeed', (event, html) => {
+    shell.openExternal(`file://${html}`);
+});
+
+ipcRenderer.on('processing-did-fail', (event, error) => {
+    console.error(error);
+    alert('Failed :\'(');
+});
+
+buttons.source.addEventListener('click', () => {
+    const directory = dialog.showOpenDialog({
+        properties: ['openDirectory'],
     });
-}
+    if (directory) {
+        inputs.source.value = directory;
+    }
+});
 
-handleEvents();
+buttons.destination.addEventListener('click', () => {
+    const directory = dialog.showOpenDialog({
+        properties: [
+            'openDirectory',
+            'createDirectory',
+        ],
+    });
+    if (directory) {
+        inputs.destination.value = directory;
+    }
+});
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    ipcRenderer.send('did-submit-form', {
+        source: inputs.source.value,
+        destination: inputs.destination.value,
+        name: inputs.name.value,
+        fps: inputs.fps.value,
+    });
+});

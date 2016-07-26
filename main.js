@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const generator = require('animation-strip-generator');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -6,35 +6,32 @@ const generator = require('animation-strip-generator');
 let mainWindow;
 
 function createWindow() {
-    // Create the browser window.
     mainWindow = new BrowserWindow({ width: 720, height: 480, titleBarStyle: 'hidden' });
-
-    // and load the index.html of the app.
     mainWindow.loadURL(`file://${__dirname}/index.html`);
-
-    // Emitted when the window is closed.
     mainWindow.on('closed', () => {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         mainWindow = null;
     });
-
     mainWindow.webContents.on('did-finish-load', () => {
         mainWindow.webContents.send('did-finish-load');
     });
 }
 
-function handleEvents() {
-    ipcMain.on('request', (event, arg) => {
-        console.log(arg);
-        event.sender.send('response', {});
-    });
-}
-
-function promptDirectory() {
-    return dialog.showOpenDialog({
-        properties: ['openDirectory'],
+function handleSubmission() {
+    ipcMain.on('did-submit-form', (event, argument) => {
+        const { source, destination, name, fps } = argument;
+        generator(source, destination, name, fps).then(
+            success => {
+                console.log(success);
+                event.sender.send('processing-did-succeed', /^(.*?.html)/m.exec(success)[1]);
+            },
+            error => {
+                console.log(error);
+                event.sender.send('processing-did-fail', error);
+            }
+        );
     });
 }
 
@@ -43,16 +40,9 @@ function promptDirectory() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
     createWindow();
-    handleEvents();
-//    const source = promptDirectory();
-//    const destination = promptDirectory();
-//    generator(source, destination).then(
-//        success => console.log(success),
-//        error => console.log(error)
-//    );
+    handleSubmission();
 });
 
-// Quit when all windows are closed.
 app.on('window-all-closed', () => {
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
@@ -68,6 +58,3 @@ app.on('activate', () => {
         createWindow();
     }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
